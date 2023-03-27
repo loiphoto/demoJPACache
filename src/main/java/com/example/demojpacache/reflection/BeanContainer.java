@@ -25,7 +25,6 @@ public class BeanContainer {
             executorService.execute(() -> {
                 Field[] declaredFields = clazz.getDeclaredFields();
                 String simpleName = formatCamleCase(clazz.getSimpleName());
-                System.out.println("----simple name " + simpleName);
                 if (declaredFields.length == 0) {
                     try {
                         Object newBean = clazz.getDeclaredConstructor().newInstance();
