@@ -1,15 +1,17 @@
 package com.example.demojpacache;
 
 import com.example.demojpacache.Entity.User;
-import com.example.demojpacache.repository.UserRepository;
+import com.example.demojpacache.exception.UserNotFoundException;
 import com.example.demojpacache.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 public class HomeController {
@@ -24,7 +26,7 @@ public class HomeController {
 
     @GetMapping("/users")
     @ResponseBody
-    public List<User> getAll() {
+    public List<User> findById() {
         return userService.findAllUser();
     }
 
@@ -32,5 +34,23 @@ public class HomeController {
     public ResponseEntity deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{id}")
+    @ResponseBody
+    public User findById(@PathVariable("id") Long id) throws UserNotFoundException {
+        log.info("Get User by ID -------------- {}", id);
+        return userService.findById(id);
+    }
+
+    @DeleteMapping("/users")
+    public ResponseEntity deleteAllUsers(){
+        userService.deleteAllUser();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@RequestBody User user, @PathVariable("id") Long id){
+        return userService.updateUser(id, user);
     }
 }

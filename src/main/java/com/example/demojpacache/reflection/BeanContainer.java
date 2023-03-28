@@ -1,14 +1,11 @@
 package com.example.demojpacache.reflection;
 
-import com.example.demojpacache.reflection.BeanCustom;
-import com.example.demojpacache.reflection.MyAnnotation;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class BeanContainer {
     private static Map<String, Object> beans = new HashMap<>();
