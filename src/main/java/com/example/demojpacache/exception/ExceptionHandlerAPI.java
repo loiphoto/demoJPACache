@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionHandlerAPI {
 
-    @ExceptionHandler({UserNotFoundException.class, EmptyResultDataAccessException.class})
+    @ExceptionHandler({UserNotFoundException.class, EmptyResultDataAccessException.class, RoleNotFoundException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage handleAllException(Exception ex){
         return new ErrorMessage(1, ex.getMessage());

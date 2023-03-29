@@ -6,14 +6,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.data.redis.core.RedisTemplate;
+//import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootApplication
 @AllArgsConstructor
 @EnableCaching
 public class DemoJpaCacheApplication implements CommandLineRunner {
 
-    private RedisTemplate redisTemplate;
+//    private RedisTemplate redisTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(DemoJpaCacheApplication.class, args);
@@ -22,7 +22,7 @@ public class DemoJpaCacheApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         BeanContainer beanContainer = new BeanContainer();
-        redisTemplate.opsForValue().set("olaaa","333");
-        System.out.println("Value of key loda: "+redisTemplate.opsForValue().get("olaaa"));
+//        redisTemplate.opsForValue().set("olaaa","333");
+//        System.out.println("Value of key loda: "+redisTemplate.opsForValue().get("olaaa"));
     }
 }
