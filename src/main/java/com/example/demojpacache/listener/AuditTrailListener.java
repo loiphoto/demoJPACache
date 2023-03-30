@@ -1,4 +1,4 @@
-package com.example.demojpacache.Listener;
+package com.example.demojpacache.listener;
 
 import com.example.demojpacache.Entity.User;
 import lombok.extern.slf4j.Slf4j;
