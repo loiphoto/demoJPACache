@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class UserSercutityImpl implements UserDetails {
+public class UserSercurityImpl implements UserDetails {
 
     private Long id;
 
@@ -23,7 +23,7 @@ public class UserSercutityImpl implements UserDetails {
 
     private String email;
 
-    public UserSercutityImpl(User user) {
+    public UserSercurityImpl(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();

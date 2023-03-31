@@ -2,7 +2,7 @@ package com.example.demojpacache.service.impl;
 
 import com.example.demojpacache.Entity.User;
 import com.example.demojpacache.repository.UserRepository;
-import com.example.demojpacache.security.UserSercutityImpl;
+import com.example.demojpacache.security.UserSercurityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserSercutityImpl(user);
+        return new UserSercurityImpl(user);
 
     }
 }

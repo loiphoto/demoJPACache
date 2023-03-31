@@ -9,9 +9,8 @@ import com.example.demojpacache.exception.ErrorMessage;
 import com.example.demojpacache.repository.RoleRepository;
 import com.example.demojpacache.repository.UserRepository;
 import com.example.demojpacache.security.JwtTokenUtil;
-import com.example.demojpacache.security.UserSercutityImpl;
+import com.example.demojpacache.security.UserSercurityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -56,7 +55,7 @@ public class AuthController {
             Authentication authenticate = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authenticate);
-            UserSercutityImpl user = (UserSercutityImpl) authenticate.getPrincipal();
+            UserSercurityImpl user = (UserSercurityImpl) authenticate.getPrincipal();
             String token = jwtTokenUtil.generateToken(user);
             return ResponseEntity.ok(new JwtResponse(token,
                     user.getId(),

@@ -1,6 +1,5 @@
 package com.example.demojpacache.security;
 
-import com.example.demojpacache.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +23,6 @@ public class AuthJwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private UserRepository userRepository;
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -44,7 +39,7 @@ public class AuthJwtTokenFilter extends OncePerRequestFilter {
                 return;
             }
 
-            UserSercutityImpl user = (UserSercutityImpl) jwtTokenUtil.parseToken(token);
+            UserSercurityImpl user = (UserSercurityImpl) jwtTokenUtil.parseToken(token);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     user, null, user.getAuthorities());

@@ -13,7 +13,7 @@ public class CreateUserRequest {
 
     private String address;
 
-    private String name;
+    private String username;
 
     private Long roleId;
 }

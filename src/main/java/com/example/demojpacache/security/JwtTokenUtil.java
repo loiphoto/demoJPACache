@@ -1,8 +1,5 @@
 package com.example.demojpacache.security;
 
-import com.example.demojpacache.Entity.Role;
-import com.example.demojpacache.Entity.User;
-import com.example.demojpacache.repository.RoleRepository;
 import com.example.demojpacache.service.impl.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +42,7 @@ public class JwtTokenUtil {
      * @param user the user for which the token will be generated
      * @return the JWT token
      */
-    public String generateToken(UserSercutityImpl user) {
+    public String generateToken(UserSercurityImpl user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.setIssuedAt(new Date());
         claims.setExpiration(new Date(new Date().getTime() + 60000*30));
