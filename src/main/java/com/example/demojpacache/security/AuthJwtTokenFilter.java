@@ -1,6 +1,5 @@
 package com.example.demojpacache.security;
 
-import com.example.demojpacache.Entity.User;
 import com.example.demojpacache.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -32,25 +31,26 @@ public class AuthJwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            System.out.println("~~~~~~~~~Go filter ~~~~~~~~");
+            log.info("~~~~~~~~~Go filter ~~~~~~~~");
             String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (Strings.isEmpty(header) || !header.startsWith("Bearer ")){
+            if (Strings.isEmpty(header) || !header.startsWith("Bearer ")) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
             String token = header.split(" ")[1].trim();
-            if (!jwtTokenUtil.validateJwtToken(token)){
+            if (!jwtTokenUtil.validateJwtToken(token)) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            User user = (User) jwtTokenUtil.parseToken(token);
+            UserSercutityImpl user = (UserSercutityImpl) jwtTokenUtil.parseToken(token);
+
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     user, null, user.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }catch (Exception ex){
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        } catch (Exception ex) {
             logger.error("Cannot set user authentication: {}", ex);
         }
         filterChain.doFilter(request, response);

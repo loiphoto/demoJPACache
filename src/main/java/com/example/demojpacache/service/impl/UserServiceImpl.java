@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable("user")
     @Override
     public User findById(Long id) throws UserNotFoundException {
-        simulateSlowService();
+//        simulateSlowService();
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not found"));
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @CachePut(value = "user", key = "#id")
     @Override
     public User updateUser(Long id, User user) {
-        simulateSlowService();
+//        simulateSlowService();
         user.setId(id);
         return userRepository.save(user);
     }

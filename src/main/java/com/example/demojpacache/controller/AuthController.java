@@ -4,10 +4,12 @@ import com.example.demojpacache.Entity.Role;
 import com.example.demojpacache.Entity.User;
 import com.example.demojpacache.dto.request.LoginRequest;
 import com.example.demojpacache.dto.request.SignupRequest;
+import com.example.demojpacache.dto.response.JwtResponse;
 import com.example.demojpacache.exception.ErrorMessage;
 import com.example.demojpacache.repository.RoleRepository;
 import com.example.demojpacache.repository.UserRepository;
 import com.example.demojpacache.security.JwtTokenUtil;
+import com.example.demojpacache.security.UserSercutityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,18 +53,16 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            System.out.println("-------zzzzz-------");
             Authentication authenticate = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-            User user = (User) authenticate.getPrincipal();
-            System.out.println(user);
-            return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateToken(user)
-                    )
-                    .body(user);
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            UserSercutityImpl user = (UserSercutityImpl) authenticate.getPrincipal();
+            String token = jwtTokenUtil.generateToken(user);
+            return ResponseEntity.ok(new JwtResponse(token,
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getRoleName()));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

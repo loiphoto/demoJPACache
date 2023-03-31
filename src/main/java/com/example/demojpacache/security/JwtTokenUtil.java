@@ -16,23 +16,22 @@ import java.util.Date;
 public class JwtTokenUtil {
 
     private final String SECRET = "bezKoderSecretKey";
-    private final RoleRepository roleRepository;
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtTokenUtil(RoleRepository roleRepository, CustomUserDetailsService customUserDetailsService) {
-        this.roleRepository = roleRepository;
+    public JwtTokenUtil(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 
     public UserDetails parseToken(String token) {
         try {
             Claims body = Jwts.parser()
-                    .setSigningKey(SECRET)
+                     .setSigningKey(SECRET)
                     .parseClaimsJws(token)
                     .getBody();
 
-            return customUserDetailsService.loadUserByUsername(body.getSubject());
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(body.getSubject());
+            return userDetails;
 
         } catch (JwtException | ClassCastException e) {
             return null;
@@ -46,10 +45,8 @@ public class JwtTokenUtil {
      * @param user the user for which the token will be generated
      * @return the JWT token
      */
-    public String generateToken(User user) {
+    public String generateToken(UserSercutityImpl user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-        claims.put("userId", user.getId() + "");
-        claims.put("role", user.getRole());
         claims.setIssuedAt(new Date());
         claims.setExpiration(new Date(new Date().getTime() + 60000*30));
 
