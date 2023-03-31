@@ -5,6 +5,7 @@ import com.example.demojpacache.Entity.User;
 import com.example.demojpacache.dto.request.CreateUserRequest;
 import com.example.demojpacache.exception.RoleNotFoundException;
 import com.example.demojpacache.exception.UserNotFoundException;
+import com.example.demojpacache.rabbitMQ.RabbitMQProducer;
 import com.example.demojpacache.service.base.RoleService;
 import com.example.demojpacache.service.base.UserService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @Slf4j
@@ -23,6 +25,8 @@ public class HomeController {
     private UserService userService;
 
     private RoleService roleService;
+
+    private RabbitMQProducer rabbitMQProducer;
 
     @PostMapping("/users/create")
     public ResponseEntity createUser(@RequestBody CreateUserRequest user) throws RoleNotFoundException {
@@ -82,5 +86,11 @@ public class HomeController {
         userService.createUser(user);
         System.out.println(user);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/rabbitMQ")
+    public ResponseEntity rabbitMQ(@RequestParam("message") String message) {
+        rabbitMQProducer.sendMessage(message);
+        return ResponseEntity.ok("Message sent to RabbitMQ ...");
     }
 }

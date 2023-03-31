@@ -49,8 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/users/**").hasAnyAuthority("user","admin")
-                .antMatchers("/roles/**").hasAuthority("admin")
+                .antMatchers("/rabbitMQ").permitAll()
+                .antMatchers("/users/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/roles/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
