@@ -4,4 +4,6 @@ public class newClassGit {
 
     private String zz;
     //commit1
+    //commit2
+    //commit4
 }
