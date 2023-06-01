@@ -79,8 +79,8 @@ public class HomeController {
     }
 
     @GetMapping("/roles/test")
-    public ResponseEntity Test(@RequestBody User user) throws UserNotFoundException {
-//        User user = userService.findById(12L);
+    public ResponseEntity Test() throws UserNotFoundException {
+        User user = userService.findById(12L);
 //        Role role = user.getRole();
 //        role.setDescription("miumiu");
         userService.createUser(user);

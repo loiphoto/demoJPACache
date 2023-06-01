@@ -48,10 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-//                .antMatchers("/rabbitMQ").permitAll()
-//                .antMatchers("/users/**").hasAnyRole("USER","ADMIN")
-//                .antMatchers("/roles/**").hasRole("ADMIN")
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/rabbitMQ").permitAll()
+                .antMatchers("/users/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/roles/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
