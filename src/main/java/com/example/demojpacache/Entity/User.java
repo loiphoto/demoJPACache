@@ -28,7 +28,6 @@ public class User {
     @Column
     private String email;
 
-    private String code;
     @ManyToOne
     private Role role;
 

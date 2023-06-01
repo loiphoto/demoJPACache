@@ -25,11 +25,10 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     private ModelMapper mapper;
-    private LockService lockService;
 
     @Override
     public void createUser(User user) {
-        lockService.createOrUpdate(user);
+        userRepository.save(user);
     }
 
     @Override
