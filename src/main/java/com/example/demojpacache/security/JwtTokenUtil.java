@@ -3,6 +3,7 @@ package com.example.demojpacache.security;
 import com.example.demojpacache.service.impl.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -64,16 +65,20 @@ public class JwtTokenUtil {
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
+            throw new AccessDeniedException("Unauthorized");
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
+            throw new AccessDeniedException("Unauthorized");
         } catch (ExpiredJwtException e) {
             log.error("JWT token is expired: {}", e.getMessage());
+            throw new AccessDeniedException("Unauthorized");
         } catch (UnsupportedJwtException e) {
             log.error("JWT token is unsupported: {}", e.getMessage());
+            throw new AccessDeniedException("Unauthorized");
         } catch (IllegalArgumentException e) {
             log.error("JWT claims string is empty: {}", e.getMessage());
+            throw new AccessDeniedException("Unauthorized");
         }
-        return false;
     }
 
 }

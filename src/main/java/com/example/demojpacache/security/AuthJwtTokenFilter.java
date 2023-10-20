@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -45,9 +46,10 @@ public class AuthJwtTokenFilter extends OncePerRequestFilter {
                     user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            filterChain.doFilter(request, response);
         } catch (Exception ex) {
             logger.error("Cannot set user authentication: {}", ex);
+            throw new AccessDeniedException("Unauthorized");
         }
-        filterChain.doFilter(request, response);
     }
 }
