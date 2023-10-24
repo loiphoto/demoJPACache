@@ -1,6 +1,6 @@
 package com.example.demojpacache.dto.response;
 
-import java.util.List;
+import com.example.demojpacache.security.Role;
 
 public class JwtResponse {
   private String token;
@@ -8,9 +8,9 @@ public class JwtResponse {
   private Long id;
   private String username;
   private String email;
-  private String role;
+  private Role role;
 
-  public JwtResponse(String accessToken, Long id, String username, String email, String role) {
+  public JwtResponse(String accessToken, Long id, String username, String email, Role role) {
     this.token = accessToken;
     this.id = id;
     this.username = username;
@@ -58,7 +58,11 @@ public class JwtResponse {
     this.username = username;
   }
 
-  public String getRole() {
+  public Role getRole() {
     return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
   }
 }

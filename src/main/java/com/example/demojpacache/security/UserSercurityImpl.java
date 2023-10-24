@@ -3,40 +3,35 @@ package com.example.demojpacache.security;
 import com.example.demojpacache.Entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 public class UserSercurityImpl implements UserDetails {
 
-    private Long id;
+    private final Long id;
 
-    private String username;
+    private final String username;
 
-    private String password;
+    private final String password;
 
-    private String roleName;
+    private final Role role;
 
-    private String email;
+    private final String email;
 
     public UserSercurityImpl(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.email = user.getEmail();
-        this.roleName = user.getRole().getName();
+        this.role = Role.findRoleByName(user.getRole().getName());
 
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(roleName));
-        return authorities;
+        return role.getSimpleGrantedAuthorities();
     }
 
     @Override

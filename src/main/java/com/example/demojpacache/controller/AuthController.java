@@ -61,7 +61,7 @@ public class AuthController {
                     user.getId(),
                     user.getUsername(),
                     user.getEmail(),
-                    user.getRoleName()));
+                    user.getRole()));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

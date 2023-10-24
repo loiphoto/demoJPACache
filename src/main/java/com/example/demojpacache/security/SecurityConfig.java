@@ -44,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    //Khi dùng hasRole spring security sẽ tự thêm ROLE_ ở trước =))
+    //VD:  .antMatchers("/users/**").hasAnyAuthority("USER", "ADMIN")
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -51,9 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/rabbitMQ").permitAll()
-                //Khi dùng hasRole spring security sẽ tự thêm ROLE_ ở trước =)), nên dùng Authority
-                .antMatchers("/users/**").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/roles/**").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated();
         http.exceptionHandling()
                 .authenticationEntryPoint(

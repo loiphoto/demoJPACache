@@ -12,14 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @Slf4j
 @RestController
 @AllArgsConstructor
+//@PreAuthorize("hasRole('ADMIN')")
 public class HomeController {
 
     private UserService userService;
@@ -29,13 +30,14 @@ public class HomeController {
     private RabbitMQProducer rabbitMQProducer;
 
     @PostMapping("/users/create")
+    @PreAuthorize("hasAuthority('user:create')")
     public ResponseEntity createUser(@RequestBody CreateUserRequest user) throws RoleNotFoundException {
         userService.createUserWithRole(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/users")
-    @ResponseBody
+    @PreAuthorize("hasAuthority('user:read')")
     public List<User> findAllUser() {
         return userService.findAllUser();
     }
