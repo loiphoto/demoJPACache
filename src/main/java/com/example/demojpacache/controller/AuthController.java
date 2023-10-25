@@ -8,43 +8,31 @@ import com.example.demojpacache.dto.response.JwtResponse;
 import com.example.demojpacache.exception.ErrorMessage;
 import com.example.demojpacache.repository.RoleRepository;
 import com.example.demojpacache.repository.UserRepository;
-import com.example.demojpacache.security.JwtTokenUtil;
-import com.example.demojpacache.security.UserSercurityImpl;
+import com.example.demojpacache.service.base.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    private final JwtTokenUtil jwtTokenUtil;
-
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     PasswordEncoder encoder;
 
 
-    public AuthController(JwtTokenUtil jwtTokenUtil, UserRepository userRepository, RoleRepository roleRepository) {
-        this.jwtTokenUtil = jwtTokenUtil;
+    public AuthController(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
@@ -52,16 +40,8 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            Authentication authenticate = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
-            UserSercurityImpl user = (UserSercurityImpl) authenticate.getPrincipal();
-            String token = jwtTokenUtil.generateToken(user);
-            return ResponseEntity.ok(new JwtResponse(token,
-                    user.getId(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getRole()));
+            JwtResponse response = authService.login(loginRequest);
+            return ResponseEntity.ok(response);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -94,5 +74,10 @@ public class AuthController {
         user.setRole(userRole);
         userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity getToken(@RequestParam String refreshToken) {
+        return ResponseEntity.ok(authService.refreshToken(refreshToken));
     }
 }

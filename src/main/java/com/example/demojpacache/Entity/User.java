@@ -5,13 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "User")
 @EntityListeners(AuditTrailListener.class)
-public class User {
+public class User implements Serializable {
+
+    //implement serializable để có thể save xuống redis  (kha nang do convert ra byte tranh bị exception)
+    private static final long serialVersionUID = 7156526077883281623L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

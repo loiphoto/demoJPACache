@@ -24,7 +24,7 @@ public class JwtTokenUtil {
     public UserDetails parseToken(String token) {
         try {
             Claims body = Jwts.parser()
-                     .setSigningKey(SECRET)
+                    .setSigningKey(SECRET)
                     .parseClaimsJws(token)
                     .getBody();
 
@@ -40,13 +40,13 @@ public class JwtTokenUtil {
      * Generates a JWT token containing username as subject, and userId and role as additional claims. These properties are taken from the specified
      * User object. Tokens validity is infinite.
      *
-     * @param user the user for which the token will be generated
+     * @param userName the user for which the token will be generated
      * @return the JWT token
      */
-    public String generateToken(UserSercurityImpl user) {
-        Claims claims = Jwts.claims().setSubject(user.getUsername());
+    public String generateToken(String userName) {
+        Claims claims = Jwts.claims().setSubject(userName);
         claims.setIssuedAt(new Date());
-        claims.setExpiration(new Date(new Date().getTime() + 60000*30));
+        claims.setExpiration(new Date(new Date().getTime() + 1000 * 60 * 5)); //5 minutes
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -71,7 +71,7 @@ public class JwtTokenUtil {
             throw new AccessDeniedException("Unauthorized");
         } catch (ExpiredJwtException e) {
             log.error("JWT token is expired: {}", e.getMessage());
-            throw new AccessDeniedException("Unauthorized");
+            throw new ExpiredJwtException(null, null, "Token has expired");
         } catch (UnsupportedJwtException e) {
             log.error("JWT token is unsupported: {}", e.getMessage());
             throw new AccessDeniedException("Unauthorized");

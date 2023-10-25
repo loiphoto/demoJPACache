@@ -26,19 +26,23 @@ public class AuthJwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            log.info("~~~~~~~~~Go filter ~~~~~~~~");
-            String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (Strings.isEmpty(header) || !header.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+        log.info("~~~~~~~~~Go filter ~~~~~~~~");
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (Strings.isEmpty(header) || !header.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            String token = header.split(" ")[1].trim();
+        String token = header.split(" ")[1].trim();
+        try {
             if (!jwtTokenUtil.validateJwtToken(token)) {
                 filterChain.doFilter(request, response);
                 return;
             }
+        } catch (Exception ex) {
+            logger.error("Cannot set user authentication: {}", ex);
+            throw new AccessDeniedException("Unauthorized");
+        }
 
             UserSercurityImpl user = (UserSercurityImpl) jwtTokenUtil.parseToken(token);
 
@@ -47,9 +51,5 @@ public class AuthJwtTokenFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             filterChain.doFilter(request, response);
-        } catch (Exception ex) {
-            logger.error("Cannot set user authentication: {}", ex);
-            throw new AccessDeniedException("Unauthorized");
-        }
     }
 }

@@ -8,6 +8,7 @@ import com.example.demojpacache.exception.UserNotFoundException;
 import com.example.demojpacache.rabbitMQ.RabbitMQProducer;
 import com.example.demojpacache.service.base.RoleService;
 import com.example.demojpacache.service.base.UserService;
+import com.example.demojpacache.service.impl.RedisService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ public class HomeController {
     private RoleService roleService;
 
     private RabbitMQProducer rabbitMQProducer;
+
+    private RedisService redisService;
 
     @PostMapping("/users/create")
     @PreAuthorize("hasAuthority('user:create')")
@@ -95,4 +98,12 @@ public class HomeController {
         rabbitMQProducer.sendMessage(message);
         return ResponseEntity.ok("Message sent to RabbitMQ ...");
     }
+
+    @GetMapping("/redis")
+    public ResponseEntity redis() {
+        return ResponseEntity.ok("All key redis ..." + redisService.getValue("2"));
+    }
+
+
+
 }
