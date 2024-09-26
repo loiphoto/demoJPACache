@@ -1,0 +1,10 @@
+
+V	java:S125	"<This block of commented-out lines of code should be removed.(³ã¸öùÿÿÿÿ
+Q	java:S125"<This block of commented-out lines of code should be removed.(¬·±ƒ
+W
+java:S1854"ARemove this useless assignment to local variable "beanContainer".(÷ø¨ª
+C
+java:S2440"-Remove this instantiation of "BeanContainer".(÷ø¨ª
+H
+java:S1481"2Remove this unused "beanContainer" local variable.(÷ø¨ª
+P	java:S125"<This block of commented-out lines of code should be removed.(Ç÷:

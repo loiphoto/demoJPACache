@@ -1,0 +1,20 @@
+
+E
+java:S3740 "/Provide the parametrized type for this generic.(ÍºÚ«
+J
+java:S3740,"/Provide the parametrized type for this generic.(×óŠÿÿÿÿÿ
+J
+java:S37409"/Provide the parametrized type for this generic.(×‡®›ÿÿÿÿÿ
+E
+java:S3740F"/Provide the parametrized type for this generic.(İú´†
+J
+java:S3740R"/Provide the parametrized type for this generic.(¡ÊÕ­ùÿÿÿÿ
+J
+java:S3740\"/Provide the parametrized type for this generic.(ùîÿÔüÿÿÿÿ
+U
+java:S4684?"@Replace this persistent entity with a simple POJO or DTO object.(¦²ûI
+V
+java:S4684F"@Replace this persistent entity with a simple POJO or DTO object.(İú´†
+h	java:S100R"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ÊÕ­ùÿÿÿÿ
+P	java:S125T"<This block of commented-out lines of code should be removed.(ÿï€V
+N	java:S106W"9Replace this use of System.out or System.err by a logger.(Ø¼¢ƒ
